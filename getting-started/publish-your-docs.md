@@ -5,11 +5,42 @@ icon: globe-pointer
 # Deploy your first smart contract using pint
 
 \
-In this example you will get a clear understanding on how to create a simple token smart contract using pint, compile and deploy it on a local network.&#x20;
+&#x20;"counter" is one of the simplest smart contracts that can be written in Pint. It showcases how a contract can have multiple predicates and how it can declare and use _storage_
 
-## Breakdown of essential components in the token smart contract
+## Simple Counter contract&#x20;
 
-Here is an explanation of what each function does in the provided token smart contract\
+Create a new file named counter.pnt. \
+
+
+```rust
+storage {
+    counter: int,
+}
+
+predicate Initialize(value: int) {
+    let counter: int = mut storage::counter;
+    constraint counter' == value;
+}
+
+predicate Increment(amount: int) {
+    let counter: int = mut storage::counter;
+    constraint counter' == counter + amount;
+}
+```
+
+The contract starts by declaring a `storage` block which contains a single storage variable called `counter` of type `int` (i.e. integer). The contract later declares two separate predicates, each having a single _parameter_ and declaring two statements. Let's walk through the first predicate named `Initialize`:
+
+1. Predicate `Initialize` has a single _parameter_ called `value` of type `int`. The parameters of a predicate are essentially _decision variables_ that a solver is required to find values for such that every `constraint` in the predicate evaluates to `true`. The expression "decision variable" is commonly used in constraint programming languages to refer to unknowns that a solver must find given some constraints. In `Initialize`, the parameter `value` is the value that we want our counter to get initialized to.
+2. The second statement declares a local variable and initializes it to `mut storage::counter`. The statement `let counter: int = mut storage::counter` creates a local variable called `counter` and initializes it to the current value of `counter` declared in the `storage` block. The `mut` keyword simply indicates that the solver is allowed to propose a new value for `counter`. If `mut` is not present, then the storage variable `counter` cannot be modified by anyone attempting to solve predicate `Initialize`.
+3. The third statement contains the core logic of this predicate. It **declares** that the "next value" of `counter` **must** be equal to `value`. Note the `'` notation here which can be only applied to a local variable, and means "the next value of the state variable after a valid state transition".
+
+The second predicate, called `Increment`, has a similar structure to `Initialize`. However, instead of initializing `counter`, It increments it by `amount`. Note that both `counter` (the current value) and `counter'` (the next value) are both used in the constraint to enforce that the next value is dependent on the current value, which was not the case in `Initialize`.
+
+
+
+## Deploy a token smart contract
+
+In this example you will get a clear understanding on how to create a simple token smart contract using pint, compile and deploy it on a local network. The components are as follows\
 \
 1\) Storage Struct
 

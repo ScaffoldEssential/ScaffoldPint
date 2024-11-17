@@ -1,6 +1,6 @@
 # Write a simple counter smart contract
 
-In the backend/src/contract.pnt directory you'll have a simple token smart contract with burn, mint functionality&#x20;
+In the backend/src/contract.pnt directory you'll have a simple token smart contract with burn, mint functionality
 
 ```rust
 use std::lib::PredicateAddress;
@@ -166,4 +166,4 @@ predicate Cancel(key: b256, auth: CancelAuth) {
 
 We'll now compile the contract and deploy it locally.\
 \
-To compile :- \
+To compile :- Head over\

@@ -8,7 +8,7 @@ description: >-
 
 Spin up the front by running the below command in the root directory
 
-```
+```bash
 npm run dev
 ```
 
